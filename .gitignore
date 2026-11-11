@@ -1,0 +1,9 @@
+# Nunca subir firmware, imagenes ni binarios de terceros
+*.7z
+*.zip
+*.img
+*.exe
+*.dll
+firmware/
+platform-tools/
+usb_driver/
