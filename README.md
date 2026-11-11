@@ -28,7 +28,8 @@ Cómo recuperamos un **Xiaomi Mi TV Stick 4K (MDZ-27-AA, nombre interno `soul`)*
 6. [Si cambiar de slot no funciona](#6-si-cambiar-de-slot-no-funciona)
 7. [Después de recuperarlo](#7-después-de-recuperarlo)
 8. [Scripts de este repositorio](#8-scripts-de-este-repositorio)
-9. [Referencias y créditos](#9-referencias-y-créditos)
+9. [Hacerlo más fácil con un asistente de IA (Claude Code, Codex)](#9-hacerlo-más-fácil-con-un-asistente-de-ia-claude-code-codex)
+10. [Referencias y créditos](#10-referencias-y-créditos)
 
 ---
 
@@ -245,7 +246,27 @@ Se encontró [kaiqueizaque-crypto/xiaomi-mi-tv-stick-4k-recovery-tool](https://g
 
 Son texto plano: **léelos antes de correrlos**. Están en ASCII para que PowerShell 5.1 los lea bien.
 
-## 9. Referencias y créditos
+## 9. Hacerlo más fácil con un asistente de IA (Claude Code, Codex)
+
+Esta recuperación se hizo con **[Claude Code](https://claude.com/claude-code)** en la terminal. Lo mismo se puede hacer con **[Codex CLI](https://github.com/openai/codex)** u otro agente de terminal. El asistente ejecutó los comandos, vigiló el USB, leyó los registros de Windows y encontró las causas de los problemas (el DNL deshabilitado, el GUID borrado, los procesos huérfanos). Tú solo conectas y desconectas el stick y corres los comandos de administrador.
+
+**Cómo usarlo:**
+
+1. Instala el asistente y ábrelo en una terminal **en la PC con Windows** (PowerShell, o WSL con acceso a `powershell.exe`).
+2. Dale este repositorio como contexto. Por ejemplo:
+
+   > Mi Xiaomi Mi TV Stick 4K (MDZ-27-AA) se queda en el logo y se reinicia. Sigue la guía de https://github.com/psyberpunk/Xiaomi-Mi-TV-Stick-4K-MDZ-27-AA-Unbrick-Recovery: revisa si Windows ve el DNL (`VID_1B8E&PID_C004`), ayúdame con los drivers y el GUID, atrapa el stick con fastboot y lee `version-bootloader` y `current-slot`. **No grabes ni desbloquees nada sin preguntarme.**
+
+3. Pídele que te diga **qué tipo de bootloop tienes** (sección 2) antes de proponer cualquier cambio.
+
+**Ten en cuenta:**
+
+- **Tú tienes la última palabra.** Revisa cada comando que **escribe** en el stick (`flashing unlock`, `set_active`, `flash …`) antes de aprobarlo. Leer (`getvar`, `devices`) no tiene riesgo.
+- Los comandos de **administrador** (`pnputil`, el registro) normalmente los tendrás que ejecutar tú en una PowerShell elevada. El asistente te los da listos para copiar.
+- Si el asistente corre comandos de Windows desde WSL, pídele que **cierre cualquier `fastboot.exe`/`adb.exe` antes de cada intento**. Cancelar una tarea en WSL no mata el proceso de Windows, y eso fue lo que más tiempo nos costó ([problema 5.4](#54-procesos-fastboot-huérfanos-y-el-servidor-adb)).
+- Igual que con cualquier herramienta: si te propone descargar un "kit de 1 clic" o un firmware **sin hash verificable**, no lo aceptes.
+
+## 10. Referencias y créditos
 
 - **[RodrigoDeveloperX/xiaomi-mi-tv-stick-4k-mdz-27-aa-recovery](https://github.com/RodrigoDeveloperX/xiaomi-mi-tv-stick-4k-mdz-27-aa-recovery)**: la investigación de base: las dos etapas de fastboot, el GUID ADB, la tabla de diagnóstico, el firmware con hashes. Sin ese trabajo esto no habría salido.
 - **[Hilo de 4PDA del Mi TV Stick 4K](https://4pda.to/forum/index.php?showtopic=1041410)**: origen de los paquetes de firmware (requiere registro).

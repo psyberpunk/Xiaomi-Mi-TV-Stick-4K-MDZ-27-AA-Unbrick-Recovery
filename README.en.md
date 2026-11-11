@@ -141,7 +141,27 @@ We set aside the newer platform-tools (v37.0.1) during the session, but **that t
 
 The scripts' messages are in Spanish. **Read them before you run them.**
 
-## 9. References and credits
+## 9. Make it easier with an AI assistant (Claude Code, Codex)
+
+This recovery was done with **[Claude Code](https://claude.com/claude-code)** in the terminal. You can do the same with **[Codex CLI](https://github.com/openai/codex)** or another terminal agent. The assistant ran the commands, watched USB, read the Windows logs and tracked down the root causes (the disabled DNL device, the wiped GUID, the orphaned processes). You only plug and unplug the stick and run the admin commands.
+
+**How to use it:**
+
+1. Install the assistant and open it in a terminal **on the Windows PC** (PowerShell, or WSL with access to `powershell.exe`).
+2. Give it this repository as context. For example:
+
+   > My Xiaomi Mi TV Stick 4K (MDZ-27-AA) is stuck on the logo and reboots. Follow https://github.com/psyberpunk/Xiaomi-Mi-TV-Stick-4K-MDZ-27-AA-Unbrick-Recovery: check whether Windows sees DNL (`VID_1B8E&PID_C004`), help me with the drivers and the GUID, catch the stick with fastboot and read `version-bootloader` and `current-slot`. **Don't flash or unlock anything without asking me.**
+
+3. Ask it to tell you **which brick you have** (section 2) before it proposes any change.
+
+**Keep in mind:**
+
+- **You have the final say.** Review every command that **writes** to the stick (`flashing unlock`, `set_active`, `flash …`) before you approve it. Reads (`getvar`, `devices`) are harmless.
+- **Admin** commands (`pnputil`, registry edits) usually have to be run by you in an elevated PowerShell. The assistant gives them to you ready to paste.
+- If the assistant runs Windows commands from WSL, ask it to **kill any `fastboot.exe`/`adb.exe` before every attempt**. Cancelling a task in WSL does not kill the Windows process, and that cost us the most time (see 5.4).
+- As with any tool, don't accept a "1-click kit" or firmware **without a verifiable hash**.
+
+## 10. References and credits
 
 - **[RodrigoDeveloperX/xiaomi-mi-tv-stick-4k-mdz-27-aa-recovery](https://github.com/RodrigoDeveloperX/xiaomi-mi-tv-stick-4k-mdz-27-aa-recovery)**: the core research (the two fastboot stages, the ADB GUID, the diagnosis table, and the firmware with hashes).
 - **[4PDA thread](https://4pda.to/forum/index.php?showtopic=1041410)**: where the firmware packages come from.
